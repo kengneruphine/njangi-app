@@ -15,7 +15,7 @@
 ## Demo Login
 * Username: Admin
 * Password: password
-
+### users of the system are Members and Administrator
 ## Functionalities
 * Authentication and Authorisation
 * view all users
