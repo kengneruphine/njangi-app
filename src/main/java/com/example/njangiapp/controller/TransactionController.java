@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.example.njangiapp.model.NjangiAccount;
 import com.example.njangiapp.repository.MemberRepository;
+import com.example.njangiapp.repository.NjangiAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,11 +36,15 @@ import com.example.njangiapp.model.NjangiAccount;
 @RequestMapping("api/v1/transactions")
 public class TransactionController {
 
+    @Autowired
     private MemberRepository memberRepository;
     private TransactionRepository transactionRepository;
 
     private Member member;
     private NjangiAccount njangiAccount;
+
+    @Autowired
+    private NjangiAccountRepository njangiAccountRepository;
 
     @Autowired
     private TransactionService transactionService;
@@ -113,23 +118,62 @@ public class TransactionController {
      */
 
 
-    @RequestMapping(method=RequestMethod.POST,
+    @RequestMapping(value="{memberId}", method=RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction){
-        Transaction transaction1 = transactionService.create(transaction);
+    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction ,@PathVariable("memberId")int memberId){
 
-        if (transaction1 == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        String type = transaction.getType();
+
+         List<NjangiAccount> njangiAccount = this.njangiAccountRepository.findAll();
+
+
+        double njangiAmount = this.njangiAccount.getAmount();
+        double memberAmount = this.member.getAccountBalance();
+        if(type == "deposit"){
+            if(!this.memberRepository.existsById(memberId)){
+
+                double amount = this.memberRepository.findById(memberId).getAccountBalance();
+                if(transaction.getAmount() >= memberAmount ) {
+                    this.memberRepository.updateMemberAccount((transaction.getAmount() - memberAmount), memberId);
+
+                   // NjangiAccount njangiAccount = this.njangiAccountRepository.findByAccountNumber(njangiAc);
+                    //double njangiAccountBalance = njangiAccount.getAmount();
+                    this.njangiAccountRepository.updateAccount((njangiAmount + memberAmount), njangiAccount.get(0).getId());
+                }
+
+            }
+
         }
+        else if(type == "withdraw"){
 
-        return new ResponseEntity<>(transaction1, HttpStatus.CREATED);
+           // NjangiAccount njangiAccount = this.njangiAccountRepository.findByAccountNumber(account_number);
+
+            if(!this.njangiAccountRepository.existsById(njangiAccount.get(0).getId())){
+
+                // get the total amount in the njangi account
+                double totalAmount = this.njangiAccount.getAmount();
+                if(transaction.getAmount() <= totalAmount) {
+                    this.njangiAccountRepository.updateAccount((totalAmount - transaction.getAmount()), njangiAccount.get(0).getId()); // subtract
+
+                    Member member = this.memberRepository.findById(memberId);
+                    double memberAccountBalance = member.getAccountBalance();
+                    this.memberRepository.updateMemberAccount((memberAccountBalance + transaction.getAmount()),member.getId());
+                }
+            }
+
+        }
+    transaction.setMember(memberRepository.findById(memberId));
+     transaction.setNjangiAccount(njangiAccount.get(0));
+
+     transactionRepository.save(transaction);
+     return new ResponseEntity<>(transaction,HttpStatus.OK);
     }
 
     /**
      * Update member transaction object.
      *
-     * @param transactionId
+     * @param
      * @return Transaction object (updated CustomerItem object).
      */
     @RequestMapping(value="/{transactionId}",

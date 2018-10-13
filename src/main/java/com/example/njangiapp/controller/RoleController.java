@@ -66,7 +66,7 @@ public class RoleController {
     @RequestMapping(value="/{roleId}",
             method=RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Role> getTransactionById(@PathVariable("roleId") int roleId){
+    public ResponseEntity<Role> getRoleById(@PathVariable("roleId") int roleId){
 
         Role role = roleService.findById(roleId);
         if (role == null) {

@@ -15,5 +15,4 @@ public interface NjangiAccountRepository extends JpaRepository<NjangiAccount, In
     @Transactional
     void updateAccount( double amount, Integer id);
 
-
 }
