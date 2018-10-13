@@ -16,7 +16,7 @@
 * Username: Admin
 * Password: password
 
-##To do
+## Functionalities
 * Authentication and Authorisation
 * view all users
 * Find users by id
