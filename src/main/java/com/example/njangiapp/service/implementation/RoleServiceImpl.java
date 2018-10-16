@@ -1,5 +1,6 @@
 package com.example.njangiapp.service.implementation;
 
+
 import com.example.njangiapp.model.Role;
 import com.example.njangiapp.repository.RoleRepository;
 import com.example.njangiapp.service.RoleService;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 
 @Service
-@Secured("ROLE_ADMINISTRATION")
+//@Secured("ROLE_ADMINISTRATION")
 public class RoleServiceImpl implements RoleService {
 
     @Autowired

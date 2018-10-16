@@ -32,7 +32,7 @@ public interface MemberService {
      * @param username
      * @return member object if found, else return null
      */
-    public Member findByUsername(String username);
+    public Collection<Member> findByUsername(String username);
 
     /**
      * Find a members with active/ deactivated accounts.
@@ -40,7 +40,7 @@ public interface MemberService {
      * @param isActive
      * @return Collection of members
      */
-    public Collection<Member> findByIsActive(boolean isActive);
+    public Collection<Member>findByIsActive(boolean isActive);
 
     /**
      * Create a new member account.

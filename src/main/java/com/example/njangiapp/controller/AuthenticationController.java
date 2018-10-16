@@ -16,7 +16,7 @@ import com.example.njangiapp.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 @RestController
-@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
+//@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 @RequestMapping("api/v1/authenticate")
 public class AuthenticationController {
 
@@ -26,12 +26,12 @@ public class AuthenticationController {
     /**
      * Authenticate user
      *
-     * @param username
+     * @param
      * @return Logged in user
      */
     @RequestMapping(method=RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserSys> getCategories(){
+    public ResponseEntity<UserSys> getNjangiAccount(){
         UserSys loggedInUser = userService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 
         return new ResponseEntity<>(loggedInUser, HttpStatus.OK);

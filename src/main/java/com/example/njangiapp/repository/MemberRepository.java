@@ -12,11 +12,13 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Integer> {
 
-   // @Query(value= "SELECT * FROM member WHERE username = ?1", nativeQuery = true)
-   // Optional<Member> findMember(String username);
+    // @Query(value= "SELECT * FROM member WHERE username = ?1", nativeQuery = true)
+    // Optional<Member> findMember(String username);
 
     Member findByUsername(String username);
     Collection<Member> findByIsActive(@Param("isActive") boolean isActive);
+
+    Member findByIdentifier(@Param("identifier") String identifier);
 
     Member findById(@Param("id") int id);
 

@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    @Secured("ROLE_ADMINISTRATION")
+    //@Secured("ROLE_ADMINISTRATION")
     public Collection<UserSys> findAll() {
 
         List<UserSys> users = userRepository.findAll();
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Secured("ROLE_ADMINISTRATION")
+    //@Secured("ROLE_ADMINISTRATION")
     public UserSys create( UserSys user) {
 
         if (findByUserName(user.getUsername()) != null) {
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Secured("ROLE_ADMINISTRATION")
+    //@Secured("ROLE_ADMINISTRATION")
     public void deactivate(int id) {
 
         UserSys user = findById(id);

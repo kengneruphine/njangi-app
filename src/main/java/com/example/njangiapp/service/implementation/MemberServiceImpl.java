@@ -1,6 +1,7 @@
+
 package com.example.njangiapp.service.implementation;
 
-
+/*
 import com.example.njangiapp.model.Member;
 import com.example.njangiapp.repository.MemberRepository;
 import com.example.njangiapp.service.MemberService;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 
 @Service
-@Secured("ROLE_ADMINISTRATION")
+//@Secured("ROLE_ADMINISTRATION")
 public class MemberServiceImpl implements MemberService {
 
     @Autowired
@@ -33,9 +34,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member findByUsername(String username) {
+    public Collection<Member> findByUsername(String username) {
 
-        Member  member=  memberRepository.findByUsername(username);
+        Collection<Member>  member=  memberRepository.findByUsername(username);
         return  member;
     }
 
@@ -78,3 +79,4 @@ public class MemberServiceImpl implements MemberService {
 
 }
 
+*/

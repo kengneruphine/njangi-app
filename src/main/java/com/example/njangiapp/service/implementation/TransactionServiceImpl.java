@@ -10,8 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Date;
 
+
 @Service
-@Secured("ROLE_ADMINISTRATION")
+//@Secured("ROLE_ADMINISTRATION")
 public class TransactionServiceImpl implements TransactionService {
 
     @Autowired

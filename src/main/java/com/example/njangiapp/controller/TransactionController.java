@@ -60,7 +60,7 @@ public class TransactionController {
     @RequestMapping(method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<Transaction>> getTransactions(@RequestParam(value = "date", required = false) String date,
-                                                                   @RequestParam(value = "memberId", required = false) int memberId,
+                                                                  // @RequestParam(value = "memberId", required = false) int memberId,
                                                                    @RequestParam(value = "type", required = false) String type)
             throws ParseException {
 
@@ -72,11 +72,13 @@ public class TransactionController {
             Collection<Transaction> transaction = transactionService.findByDate(date1);
             transactions.addAll(transaction);
 
-        } else if (memberId != -1) {
+        }
+        /*else if (memberId != -1) {
             Collection<Transaction> transaction = transactionService.findByMemberId(memberId);
             transactions.addAll(transaction);
 
-        } else if (type != null){
+        }*/
+        else if (type != null){
             Collection<Transaction> transaction = transactionService.findByType(type);
             transactions.addAll(transaction);
         }
@@ -89,6 +91,21 @@ public class TransactionController {
         return new ResponseEntity<>(transactions, HttpStatus.OK);
 
     }
+
+    //get transactions of a single member
+    @RequestMapping(value="/{memberId}",
+            method=RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<Transaction>> getMemberTransaction(@PathVariable("memberId") int memberId){
+
+        Collection<Transaction> transaction = transactionService.findByMemberId(memberId);
+        if (transaction == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(transaction, HttpStatus.OK);
+    }
+
 
 
     /**

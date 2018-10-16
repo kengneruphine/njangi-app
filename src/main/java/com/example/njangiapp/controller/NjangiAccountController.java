@@ -68,27 +68,7 @@ public class NjangiAccountController {
     }
 
 
-    @RequestMapping(value="{account_number}/{amount}/{member_account_number}", method=RequestMethod.POST)
-    public void putAmount(@PathVariable("account_number") String account_number,@PathVariable("amount") double amount, @PathVariable("member_account_number")String member_account_number){
-
-        NjangiAccount njangiAccount = this.njangiAccountRepository.findByAccountNumber(account_number);
-
-        if(!this.njangiAccountRepository.existsById(njangiAccount.getId())){
-
-            // get the total amount in the njangi account
-              double totalAmount = this.njangiAccountRepository.findByAccountNumber(account_number).getAmount();
-              if(amount <= totalAmount) {
-                  this.njangiAccountRepository.updateAccount((totalAmount - amount), njangiAccount.getId()); // subtract
-
-                  Member member = this.memberRepository.findByAccountNumber(member_account_number);
-                  double memberAccountBalance = member.getAccountBalance();
-                  this.memberRepository.updateMemberAccount((memberAccountBalance + amount),member.getId());
-              }
-        }
-    }
-
-
-    // Update Njangi account
+        // Update Njangi account
     @RequestMapping(method=RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

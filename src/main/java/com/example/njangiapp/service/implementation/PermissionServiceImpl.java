@@ -1,5 +1,6 @@
 package com.example.njangiapp.service.implementation;
 
+
 import com.example.njangiapp.model.Permission;
 import com.example.njangiapp.repository.PermissionRepository;
 import com.example.njangiapp.service.PermissionService;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 
 @Service
-@Secured("ROLE_ADMINISTRATION")
+//@Secured("ROLE_ADMINISTRATION")
 public class PermissionServiceImpl implements PermissionService {
 
     @Autowired

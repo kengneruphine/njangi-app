@@ -2,6 +2,8 @@ package com.example.njangiapp.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 import com.example.njangiapp.model.NjangiAccount;
 import com.example.njangiapp.repository.MemberRepository;
@@ -27,60 +29,58 @@ import com.example.njangiapp.service.MemberService;
 public class MemberController {
 
     @Autowired
-    private MemberService memberService;
-
-    @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
     private NjangiAccountRepository njangiAccountRepository;
 
-    /**
-     * Get all members or collection of active member or member with a given username.
-     *
-     * @param username, isActive
-     * @return Collection of members or member with the particular username
-     */
+    //get all members
+  /*  @RequestMapping(method=RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Member>> getMembers(){
+
+       List<Member> members;
+       members = memberRepository.findAll();
+       return new ResponseEntity<>(members,HttpStatus.OK);
+    }
+*/
+
     @RequestMapping(method=RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Member>> getMembers(@RequestParam(value = "username", required = false) String username,
-                                                             @RequestParam(value = "active", required = false) String isActive){
+    public ResponseEntity<Collection<Member>> getMembers(@RequestParam(value = "username" ,required = false) String username,
+                                                         @RequestParam(value = "active",required = false) String isActive){
 
         Collection<Member> members = new ArrayList<>();
         if (username != null) {
-            Member member = memberService.findByUsername(username);
+            Member member = memberRepository.findByUsername(username);
             members.add(member);
 
         } else if (isActive != null) {
             if (isActive.compareToIgnoreCase("true") == 0){
-                Collection<Member> activeMembers = memberService.findByIsActive(true);
+                Collection<Member> activeMembers = memberRepository.findByIsActive(true);
                 members.addAll(activeMembers);
 
             } else if(isActive.compareToIgnoreCase("false") == 0) {
-                Collection<Member> deactivatedMembers = memberService.findByIsActive(false);
+                Collection<Member> deactivatedMembers = memberRepository.findByIsActive(false);
                 members.addAll(deactivatedMembers);
 
             }
         } else {
-            Collection<Member> allMembers = memberService.findAll();
+            Collection<Member> allMembers = memberRepository.findAll();
             members.addAll(allMembers);
         }
 
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
-    /**
-     * Get member with given customer id.
-     *
-     * @param memberId
-     * @return member object or 404 if member is not found
-     */
-    @RequestMapping(value="/{memberId}",
+
+    //get a particular member
+    @RequestMapping(value="/{identifier}",
             method=RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Member> getMemberById(@PathVariable("memberId") int memberId){
+    public ResponseEntity<Member> getMemberByIdentifier(@PathVariable("identifier") String identifier){
 
-        Member member = memberService.findById(memberId);
+        Member member = memberRepository.findByIdentifier(identifier);
         if (member == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -99,7 +99,7 @@ public class MemberController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Member> createMember(@RequestBody Member member){
 
-        member = memberService.create(member);
+        member = memberRepository.save(member);
         if (member == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -113,17 +113,19 @@ public class MemberController {
      * @param member
      * @return member object (updated object)
      */
-    @RequestMapping(value="/{memberId}",
+    @RequestMapping(value="/{identifier}",
             method=RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Member> updateMember(@RequestBody Member member){
+    public ResponseEntity<Member> updateMember(@PathVariable("identifier") String identifier, @RequestBody Member member){
 
-        member = memberService.update(member);
+        Member member1 = memberRepository.findByIdentifier(identifier);
+
+        member1 = memberRepository.save(member);
         if (member == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(member, HttpStatus.OK);
+        return new ResponseEntity<>(member1, HttpStatus.OK);
     }
 
     /**
@@ -132,34 +134,18 @@ public class MemberController {
      * @param memberId
      * @return HTTP status, NON_CONTENT
      */
-    @RequestMapping(value="/{memberId}",
+    /*@RequestMapping(value="/{memberId}",
             method=RequestMethod.DELETE,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Member> deActivateMember(@PathVariable("memberId") int memberId){
 
+     memberRepository.
         memberService.deactivate(memberId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    @RequestMapping(value="/members/{id}/withdraw/{account_balance}/{njangi_account_number}", method = RequestMethod.PUT )
-        public void withdrawAmount(@PathVariable("id") int id , @PathVariable("account_balance") double account_balance, @PathVariable("njangi_account_number") String njangi_account_number){
-
-        if(!this.memberRepository.existsById(id)){
-
-            double amount = this.memberRepository.findById(id).getAccountBalance();
-            if(amount >= account_balance) {
-                this.memberRepository.updateMemberAccount((amount - account_balance), id);
-
-              NjangiAccount njangiAccount = this.njangiAccountRepository.findByAccountNumber(njangi_account_number);
-              double njangiAccountBalance = njangiAccount.getAmount();
-                this.njangiAccountRepository.updateAccount((njangiAccountBalance + account_balance), njangiAccount.getId());
-            }
-
-        }
-
     }
-
+*/
 
 
 }
