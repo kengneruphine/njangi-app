@@ -48,21 +48,21 @@ public class MemberController {
 
         Collection<Member> members = new ArrayList<>();
         if (username != null) {
-            Member member = memberService.findByUsername(username);
+            Member member = memberRepository.findByUsername(username);
             members.add(member);
 
         } else if (isActive != null) {
             if (isActive.compareToIgnoreCase("true") == 0){
-                Collection<Member> activeMembers = memberService.findByIsActive(true);
+                Collection<Member> activeMembers = memberRepository.findByIsActive(true);
                 members.addAll(activeMembers);
 
             } else if(isActive.compareToIgnoreCase("false") == 0) {
-                Collection<Member> deactivatedMembers = memberService.findByIsActive(false);
+                Collection<Member> deactivatedMembers = memberRepository.findByIsActive(false);
                 members.addAll(deactivatedMembers);
 
             }
         } else {
-            Collection<Member> allMembers = memberService.findAll();
+            Collection<Member> allMembers = memberRepository.findAll();
             members.addAll(allMembers);
         }
 
