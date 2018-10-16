@@ -93,12 +93,12 @@ public class TransactionController {
     }
 
     //get transactions of a single member
-    @RequestMapping(value="/{memberId}",
+    @RequestMapping(value="/{identifier}",
             method=RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Transaction>> getMemberTransaction(@PathVariable("memberId") int memberId){
+    public ResponseEntity<Collection<Transaction>> getMemberTransaction(@PathVariable("identifier") String identifier){
 
-        Collection<Transaction> transaction = transactionService.findByMemberId(memberId);
+        Collection<Transaction> transaction = transactionService.findByMemberIdentifier(identifier);
         if (transaction == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -134,11 +134,12 @@ public class TransactionController {
      * @return Transaction object (created Transaction object)
      */
 
+    //create transaction with a member identifier
 
-    @RequestMapping(value="{memberId}", method=RequestMethod.POST,
+    @RequestMapping(value="{identifier}", method=RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction ,@PathVariable("memberId")int memberId){
+    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction ,@PathVariable("identifier")String identifier){
 
         String type = transaction.getType();
 
@@ -148,11 +149,11 @@ public class TransactionController {
         double njangiAmount = this.njangiAccount.getAmount();
         double memberAmount = this.member.getAccountBalance();
         if(type == "deposit"){
-            if(!this.memberRepository.existsById(memberId)){
+            if(!this.memberRepository.existsByIdentifier(identifier)){
 
-                double amount = this.memberRepository.findById(memberId).getAccountBalance();
+                double amount = this.memberRepository.findByIdentifier(identifier).getAccountBalance();
                 if(transaction.getAmount() >= memberAmount ) {
-                    this.memberRepository.updateMemberAccount((transaction.getAmount() - memberAmount), memberId);
+                    this.memberRepository.updateMemberAccount((transaction.getAmount() - memberAmount), identifier);
 
                    // NjangiAccount njangiAccount = this.njangiAccountRepository.findByAccountNumber(njangiAc);
                     //double njangiAccountBalance = njangiAccount.getAmount();
@@ -173,14 +174,14 @@ public class TransactionController {
                 if(transaction.getAmount() <= totalAmount) {
                     this.njangiAccountRepository.updateAccount((totalAmount - transaction.getAmount()), njangiAccount.get(0).getId()); // subtract
 
-                    Member member = this.memberRepository.findById(memberId);
+                    Member member = this.memberRepository.findByIdentifier(identifier);
                     double memberAccountBalance = member.getAccountBalance();
-                    this.memberRepository.updateMemberAccount((memberAccountBalance + transaction.getAmount()),member.getId());
+                    this.memberRepository.updateMemberAccount((memberAccountBalance + transaction.getAmount()),member.getIdentifier());
                 }
             }
 
         }
-    transaction.setMember(memberRepository.findById(memberId));
+    transaction.setMember(memberRepository.findByIdentifier(identifier));
      transaction.setNjangiAccount(njangiAccount.get(0));
 
      transactionRepository.save(transaction);

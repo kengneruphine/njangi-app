@@ -16,16 +16,18 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     // Optional<Member> findMember(String username);
 
     Member findByUsername(String username);
-    Collection<Member> findByIsActive(@Param("isActive") boolean isActive);
+    //Collection<Member> findByIsActive(@Param("isActive") boolean isActive);
 
-    Member findByIdentifier(@Param("identifier") String identifier);
+    Member findByIdentifier(String identifier);
+    Boolean existsByIdentifier(@Param("identifier") final String identifier);
 
-    Member findById(@Param("id") int id);
+   //Member findById(@Param("id") int id);
+
 
     @Modifying()
     @Query(value = "update member  set account_balance= ?1 where id  = ?2 ", nativeQuery = true)
     @Transactional
-    void updateMemberAccount(double account_balance,Integer id);
+    void updateMemberAccount(double account_balance,String identifier);
 
     Member findByAccountNumber(String account_number);
 }

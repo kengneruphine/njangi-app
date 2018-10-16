@@ -4,66 +4,34 @@ package com.example.njangiapp.service;
 import com.example.njangiapp.model.Member;
 
 
-import java.util.Collection;
+import com.example.njangiapp.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-/**
- *  Service that provides CRUD operations for customers
- **/
-public interface MemberService {
+import java.util.List;
+import java.util.Optional;
 
-    /**
-     * Get all members in the system.
-     *
-     * @return Collection of all customers
-     */
-    public Collection<Member> findAll();
+@Service
+public class MemberService {
 
-    /**
-     * Find a customer by Id.
-     *
-     * @param id
-     * @return member object if found, else return null
-     */
-    public Member findById(int id);
+    private final MemberRepository memberRepository;
 
-    /**
-     * Find a member by username.
-     *
-     * @param username
-     * @return member object if found, else return null
-     */
-    public Collection<Member> findByUsername(String username);
+    @Autowired
+    public MemberService(final MemberRepository memberRepository){
+        super();
+        this.memberRepository = memberRepository;
+    }
 
-    /**
-     * Find a members with active/ deactivated accounts.
-     *
-     * @param isActive
-     * @return Collection of members
-     */
-    public Collection<Member>findByIsActive(boolean isActive);
 
-    /**
-     * Create a new member account.
-     *
-     * @param member
-     * @return member bject (Created member object)
-     */
-    public Member create(Member member);
+    public Boolean memberExists(final String identifier){
+        return this.memberRepository.existsByIdentifier(identifier);
+    }
 
-    /**
-     * Update an existing member account's information.
-     *
-     * @param member
-     * @return member object (Updated member object)
-     */
-    public Member update(Member member);
+    public Member findByIdentifier(final String identifier){
+        return this.memberRepository.findByIdentifier(identifier);
+    }
 
-    /**
-     * Deactivate a member account from the system.
-     *
-     * @param id
-     */
-    public void deactivate(int id);
-
+    public List<Member> fetchAllMembers(){
+        return this.memberRepository.findAll();
+    }
 }
-

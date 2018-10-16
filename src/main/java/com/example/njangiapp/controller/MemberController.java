@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.njangiapp.model.NjangiAccount;
 import com.example.njangiapp.repository.MemberRepository;
 import com.example.njangiapp.repository.NjangiAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.njangiapp.model.Member;
 import com.example.njangiapp.service.MemberService;
+import org.springframework.web.client.HttpStatusCodeException;
 
 @RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
@@ -32,20 +32,67 @@ public class MemberController {
     private MemberRepository memberRepository;
 
     @Autowired
-    private NjangiAccountRepository njangiAccountRepository;
+    private MemberService memberService;
+
+    //create member
+
+    @RequestMapping(
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+
+    public ResponseEntity<Member> createMember(@RequestBody Member member) {
+        if (!this.memberService.memberExists(member.getIdentifier())) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        member = memberRepository.save(member);
+        return new ResponseEntity<>(member, HttpStatus.CREATED);
+    }
+
 
     //get all members
-  /*  @RequestMapping(method=RequestMethod.GET,
+    @RequestMapping(method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Member>> getMembers(){
-
-       List<Member> members;
-       members = memberRepository.findAll();
-       return new ResponseEntity<>(members,HttpStatus.OK);
+    public ResponseEntity<List<Member>> fetchAllMembers() {
+        return ResponseEntity.ok(this.memberService.fetchAllMembers());
     }
-*/
 
-    @RequestMapping(method=RequestMethod.GET,
+
+    //get member by identifier
+    @RequestMapping(value = "/{identifier}",
+            method = RequestMethod.GET,
+            consumes = MediaType.ALL_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Member> finndMemberByIdentifier(@PathVariable("identifier") final String identifier) {
+
+        Member member = memberService.findByIdentifier(identifier);
+        if (member == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(member, HttpStatus.OK);
+    }
+
+    //update member
+    @RequestMapping(
+            value = "/{identifier}",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Member> updateMember(@PathVariable("identifier") String identifier, @RequestBody final Member member) {
+        Member member1 = memberRepository.findByIdentifier(identifier);
+
+        member1 = memberRepository.save(member);
+        if (member == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(member1, HttpStatus.OK);
+    }
+
+
+}
+  /*  @RequestMapping(method=RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<Member>> getMembers(@RequestParam(value = "username" ,required = false) String username,
                                                          @RequestParam(value = "active",required = false) String isActive){
@@ -88,16 +135,12 @@ public class MemberController {
         return new ResponseEntity<>(member, HttpStatus.OK);
     }
 
-    /**
-     * Create new member.
-     *
-     * @param member
-     * @return member object (created object)
-     */
+
     @RequestMapping(method=RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Member> createMember(@RequestBody Member member){
+
 
         member = memberRepository.save(member);
         if (member == null) {
@@ -107,12 +150,7 @@ public class MemberController {
         return new ResponseEntity<>(member, HttpStatus.CREATED);
     }
 
-    /**
-     * Update member.
-     *
-     * @param member
-     * @return member object (updated object)
-     */
+
     @RequestMapping(value="/{identifier}",
             method=RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -128,13 +166,8 @@ public class MemberController {
         return new ResponseEntity<>(member1, HttpStatus.OK);
     }
 
-    /**
-     * Deactivate a Member's account
-     *
-     * @param memberId
-     * @return HTTP status, NON_CONTENT
-     */
-    /*@RequestMapping(value="/{memberId}",
+
+    @RequestMapping(value="/{memberId}",
             method=RequestMethod.DELETE,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -148,4 +181,4 @@ public class MemberController {
 */
 
 
-}
+

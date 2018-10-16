@@ -33,8 +33,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public  Collection<Transaction> findByMemberId(int id){
-        Collection<Transaction> transaction = transactionRepository.findByMember(id);
+    public  Collection<Transaction> findByMemberIdentifier(String identifier){
+        Collection<Transaction> transaction = transactionRepository.findByMemberIdentifier(identifier);
         return transaction;
     }
 

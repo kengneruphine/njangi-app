@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `njangi`.`member` (
   `location` VARCHAR(255) NOT NULL,
   `date_of_birth` DATETIME NOT NULL,
   `account_balance` DOUBLE NOT NULL,
-  `picture` BIGINT(20) NOT NULL,
+  `picture` VARCHAR(255) NOT NULL,
   `account_number` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC))

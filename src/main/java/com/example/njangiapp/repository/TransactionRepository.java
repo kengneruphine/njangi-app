@@ -13,7 +13,7 @@ public interface TransactionRepository extends JpaRepository<Transaction,Integer
   //  @Query(value = "SELECT * FROM transaction WHERE type = ?1" , nativeQuery = true)
 
     Collection<Transaction> findByType(@Param("type") String type );
-    Collection<Transaction> findByMember(@Param("id") int id );
+    Collection<Transaction> findByMemberIdentifier(@Param("identifier") String identifier );
     Collection<Transaction> findByDate(@Param("date") Date date);
 
     Transaction findById(int id);
