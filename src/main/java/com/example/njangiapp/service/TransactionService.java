@@ -30,7 +30,7 @@ public interface TransactionService {
      * @param
      * @return Collection of Transaction objects
      */
-    public Collection<Transaction> findByMemberIdentifier(String identifier);
+    public Collection<Transaction> findByMemberUsername(String username);
 
     /**
      * Find transactions with due date,

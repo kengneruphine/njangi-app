@@ -92,12 +92,12 @@ public class TransactionController {
     }
 
     //get transactions of a single member
-    @RequestMapping(value="/{identifier}",
+    @RequestMapping(value="/{username}",
             method=RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Transaction>> getMemberTransaction(@PathVariable("identifier") String identifier){
+    public ResponseEntity<Collection<Transaction>> getMemberTransaction(@PathVariable("username") String username){
 
-        Collection<Transaction> transaction = transactionService.findByMemberIdentifier(identifier);
+        Collection<Transaction> transaction = transactionService.findByMemberUsername(username);
         if (transaction == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -133,7 +133,7 @@ public class TransactionController {
      * @return Transaction object (created Transaction object)
      */
 
-    //create transaction with a member identifier
+    //create transaction with a member username
 
     @RequestMapping(value="{username}", method=RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,

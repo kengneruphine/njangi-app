@@ -22,3 +22,7 @@ INSERT INTO member(id,first_name,last_name,username,email,password,is_active,ide
   VALUES (NULL,'ruphine','kengne','admin','ruphine@gmail.com','@@admin123',1,'123','657375417','engineer','buea','2009-10-01',10000.0,'hskjdkjdidhkdj','aaa')
   ON DUPLICATE KEY UPDATE username='admin',password='@@admin123';
 
+-- Create a default Njangi account if not exit
+INSERT INTO njangi_account(id,amount,account_number)
+ VALUES(NULL, 50000.0, 'bbbaaa');
+
