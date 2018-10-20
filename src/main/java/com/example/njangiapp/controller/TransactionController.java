@@ -135,10 +135,10 @@ public class TransactionController {
 
     //create transaction with a member identifier
 
-    @RequestMapping(value="{identifier}", method=RequestMethod.POST,
+    @RequestMapping(value="{username}", method=RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction ,@PathVariable("identifier")String identifier){
+    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction ,@PathVariable("username")String username){
 
         String type = transaction.getType();
 
@@ -148,11 +148,11 @@ public class TransactionController {
         double njangiAmount = this.njangiAccount.getAmount();
         double memberAmount = this.member.getAccountBalance();
         if(type == "deposit"){
-            if(!this.memberRepository.existsByIdentifier(identifier)){
+            if(!this.memberRepository.existsByUsername(username)){
 
-                double amount = this.memberRepository.findByIdentifier(identifier).getAccountBalance();
+                double amount = this.memberRepository.findByUsername(username).getAccountBalance();
                 if(transaction.getAmount() >= memberAmount ) {
-                    this.memberRepository.updateMemberAccount((transaction.getAmount() - memberAmount), identifier);
+                    this.memberRepository.updateMemberAccount((transaction.getAmount() - memberAmount), username);
 
                    // NjangiAccount njangiAccount = this.njangiAccountRepository.findByAccountNumber(njangiAc);
                     //double njangiAccountBalance = njangiAccount.getAmount();
@@ -173,14 +173,14 @@ public class TransactionController {
                 if(transaction.getAmount() <= totalAmount) {
                     this.njangiAccountRepository.updateAccount((totalAmount - transaction.getAmount()), njangiAccount.get(0).getId()); // subtract
 
-                    Member member = this.memberRepository.findByIdentifier(identifier);
+                    Member member = this.memberRepository.findByUsername(username);
                     double memberAccountBalance = member.getAccountBalance();
                     this.memberRepository.updateMemberAccount((memberAccountBalance + transaction.getAmount()),member.getIdentifier());
                 }
             }
 
         }
-    transaction.setMember(memberRepository.findByIdentifier(identifier));
+    transaction.setMember(memberRepository.findByUsername(username));
      transaction.setNjangiAccount(njangiAccount.get(0));
 
      transactionRepository.save(transaction);

@@ -27,7 +27,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     @Modifying()
     @Query(value = "update member  set account_balance= ?1 where id  = ?2 ", nativeQuery = true)
     @Transactional
-    void updateMemberAccount(double account_balance,String identifier);
+    void updateMemberAccount(double account_balance,String username);
 
     Member findByAccountNumber(String account_number);
 }

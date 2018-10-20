@@ -64,7 +64,7 @@ public class MemberController {
             method = RequestMethod.GET,
             consumes = MediaType.ALL_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Member> findMemberByIdentifier(@PathVariable("username") final String username) {
+    public ResponseEntity<Member> findMemberByUsername(@PathVariable("username") final String username) {
 
         Member member = memberService.findByUsername(username);
         if (member == null) {
