@@ -16,3 +16,9 @@ SET @userId := LAST_INSERT_ID();
 INSERT IGNORE INTO `njangi`.`usersys_role` (`usersys_id`, `role_id`) VALUES (@UsersysId, @RoleId);
 
 INSERT IGNORE INTO `njangi`.`role_permission` (`role_id`, `permission_id`) VALUES (@RoleId, @PermissionId);
+
+--Create default member if not exit
+INSERT INTO member(id,first_name,last_name,username,email,password,is_active,identifier,phone_number,occupation,location,date_of_birth,account_balance,picture,account_number)
+  VALUES (NULL,'ruphine','kengne','admin','ruphine@gmail.com','@@admin123',1,'123','657375417','engineer','buea','2009-10-01',10000.0,'hskjdkjdidhkdj','aaa')
+  ON DUPLICATE KEY UPDATE username='admin',password='@@admin123';
+

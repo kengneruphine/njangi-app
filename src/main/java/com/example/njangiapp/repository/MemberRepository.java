@@ -19,7 +19,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     //Collection<Member> findByIsActive(@Param("isActive") boolean isActive);
 
     Member findByIdentifier(String identifier);
-    Boolean existsByIdentifier(@Param("identifier") final String identifier);
+    Boolean existsByUsername(@Param("username") final String username);
 
    //Member findById(@Param("id") int id);
 

@@ -22,6 +22,8 @@ import com.example.njangiapp.repository.NjangiAccountRepository;
 import com.example.njangiapp.model.NjangiAccount;
 
 import java.util.List;
+
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 @RequestMapping("api/v1/account")
 @RestController
 public class NjangiAccountController {

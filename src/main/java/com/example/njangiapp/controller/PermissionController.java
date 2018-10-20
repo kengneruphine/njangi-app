@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.njangiapp.model.Permission;
 import com.example.njangiapp.service.PermissionService;
 
-@RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
+@RestController
 @RequestMapping("api/v1/permissions")
 public class PermissionController {
 

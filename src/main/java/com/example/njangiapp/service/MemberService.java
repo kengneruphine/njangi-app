@@ -23,12 +23,12 @@ public class MemberService {
     }
 
 
-    public Boolean memberExists(final String identifier){
-        return this.memberRepository.existsByIdentifier(identifier);
+    public Boolean memberExists(final String username){
+        return this.memberRepository.existsByUsername(username);
     }
 
-    public Member findByIdentifier(final String identifier){
-        return this.memberRepository.findByIdentifier(identifier);
+    public Member findByUsername(final String username){
+        return this.memberRepository.findByUsername(username);
     }
 
     public List<Member> fetchAllMembers(){

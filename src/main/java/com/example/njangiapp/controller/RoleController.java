@@ -23,8 +23,8 @@ import com.example.njangiapp.model.RoleDTO;
 import com.example.njangiapp.service.PermissionService;
 import com.example.njangiapp.service.RoleService;
 
-@RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
+@RestController
 @RequestMapping("api/v1/roles")
 public class RoleController {
 

@@ -23,8 +23,8 @@ import com.example.njangiapp.model.Member;
 import com.example.njangiapp.service.MemberService;
 import org.springframework.web.client.HttpStatusCodeException;
 
-@RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
+@RestController
 @RequestMapping("api/v1/members")
 public class MemberController {
 
@@ -60,13 +60,13 @@ public class MemberController {
 
 
     //get member by identifier
-    @RequestMapping(value = "/{identifier}",
+    @RequestMapping(value = "/{username}",
             method = RequestMethod.GET,
             consumes = MediaType.ALL_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Member> finndMemberByIdentifier(@PathVariable("identifier") final String identifier) {
+    public ResponseEntity<Member> findMemberByIdentifier(@PathVariable("username") final String username) {
 
-        Member member = memberService.findByIdentifier(identifier);
+        Member member = memberService.findByUsername(username);
         if (member == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -75,13 +75,13 @@ public class MemberController {
 
     //update member
     @RequestMapping(
-            value = "/{identifier}",
+            value = "/{username}",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Member> updateMember(@PathVariable("identifier") String identifier, @RequestBody final Member member) {
-        Member member1 = memberRepository.findByIdentifier(identifier);
+    public ResponseEntity<Member> updateMember(@PathVariable("username") String username, @RequestBody final Member member) {
+        Member member1 = memberRepository.findByUsername(username);
 
         member1 = memberRepository.save(member);
         if (member == null) {
