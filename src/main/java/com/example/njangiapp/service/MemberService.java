@@ -34,4 +34,13 @@ public class MemberService {
     public List<Member> fetchAllMembers(){
         return this.memberRepository.findAll();
     }
+
+    public void delete(Member member){
+        memberRepository.delete(member);
+        return;
+    }
+
+    public Member save(Member member){
+        return memberRepository.save(member);
+    }
 }

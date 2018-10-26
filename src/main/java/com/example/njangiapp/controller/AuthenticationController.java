@@ -15,7 +15,7 @@ import com.example.njangiapp.service.UserService;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
-@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
+@CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 @RestController
 @RequestMapping("api/v1/authenticate")
 public class AuthenticationController {

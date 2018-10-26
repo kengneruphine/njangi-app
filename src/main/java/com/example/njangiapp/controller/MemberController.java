@@ -23,7 +23,7 @@ import com.example.njangiapp.model.Member;
 import com.example.njangiapp.service.MemberService;
 import org.springframework.web.client.HttpStatusCodeException;
 
-@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
+@CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 @RestController
 @RequestMapping("api/v1/members")
 public class MemberController {
@@ -59,7 +59,7 @@ public class MemberController {
     }
 
 
-    //get member by identifier
+    //get member by username
     @RequestMapping(value = "/{username}",
             method = RequestMethod.GET,
             consumes = MediaType.ALL_VALUE,
@@ -80,14 +80,43 @@ public class MemberController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Member> updateMember(@PathVariable("username") String username, @RequestBody final Member member) {
-        Member member1 = memberRepository.findByUsername(username);
+    public  String  updateMember(@PathVariable("username") String username, @RequestBody final Member member) {
 
-        member1 = memberRepository.save(member);
-        if (member == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         try{
+             member.setUsername(username);
+             memberService.save(member);
+         }
+         catch (Exception ex){
+             return "Error updating the user:" +ex.toString();
+         }
+
+         return "User successfully updated!";
+       // Member member1 = memberService.findByUsername(username);
+
+       // member1 = memberRepository.save(member);
+        //if (member == null) {
+         //   return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        //}
+        //return new ResponseEntity<>(member1, HttpStatus.OK);
+    }
+
+
+    //delete member
+    @RequestMapping(
+            value="/{username}",
+            method= RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public String delete(@PathVariable String username){
+        try{
+            Member member = memberService.findByUsername(username);
+            memberService.delete(member);
         }
-        return new ResponseEntity<>(member1, HttpStatus.OK);
+        catch (Exception ex){
+            return "Error deleting the member:" + ex.toString();
+        }
+        return "Member successfully deleted!";
     }
 
 
